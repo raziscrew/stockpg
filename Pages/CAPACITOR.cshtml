@@ -1,0 +1,1466 @@
+﻿@page
+<head>
+    <script defer src="/css/all.js"></script> <!--load all styles -->
+
+</head>
+@using JPGStockServer.Entities
+
+
+<h2 class="content-block">CAPACITOR</h2>
+
+@(Html.DevExtreme().DataGrid<Stock>
+    ()
+    .ID("gridCapacitor")
+    .ElementAttr(new { @class = "dx-card wide-card" })
+    // .Selection(s => s.Mode(SelectionMode.Single))
+    .FocusedRowEnabled(true)
+      // .FocusedRowIndex(0)
+      .OnFocusedRowChanged("onFocusedRowChanged")
+    // .OnContentReady(@<text> function(e) {if(!e.component.getSelectedRowKeys().length) e.component.selectRowsByIndexes(0);} </text>)
+    .ShowBorders(false)
+   // .ShowColumnLines(true)
+   .RowAlternationEnabled(true)
+   .FilterPanel(f => f.Visible(true))
+    //.FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+    .FilterRow(f => f.Visible(true))
+    .ColumnAutoWidth(true)
+    .ColumnHidingEnabled(true)
+    .Paging(paging => paging.Enabled(true))
+    .Editing(e => e.Mode(GridEditMode.Popup)
+
+        .Popup(p => p
+        .ID("popupIfLoginCapacitor")
+        //.ShowTitle(true)
+        .CloseOnOutsideClick(true)
+        .Width(500)
+        .Height(500)
+        .Position(pos => pos
+        .My(HorizontalAlignment.Center, VerticalAlignment.Center)
+        .At(HorizontalAlignment.Center, VerticalAlignment.Center)
+        .Of("#window")
+    ))
+
+
+        .Form(f => f.Items(items => {
+
+            items.AddSimpleFor(m => m.PART_NUMBER)
+            .IsRequired(true);
+            items.AddSimpleFor(m => m.CAPACITANCE)
+            .IsRequired(true);
+            items.AddSimpleFor(m => m.LOCATION)
+            .IsRequired(true);
+            items.AddSimpleFor(m => m.VOLTAGE)
+            .IsRequired(true);
+            items.AddSimpleFor(m => m.QUANTITY)
+            .IsRequired(true)
+            .Editor(e => e
+                    .NumberBox()
+                );
+
+            //.ValidationRules(ValidationRules =>
+            //{
+            //    ValidationRules.AddNumeric();
+            //    ValidationRules.GetType();
+            //});
+
+
+
+
+        }))
+        .Texts(t => t
+        .ConfirmDeleteMessage("Are you sure you want to delete ? ")
+
+         )
+
+    //.AllowAdding(true)
+    //.AllowDeleting(true)
+    //.AllowUpdating(true)
+    )
+
+    .OnRowUpdating(@<text>
+function(e) {  for (var property in e.oldData) {
+      if (!e.newData.hasOwnProperty(property)) {
+        e.newData[property] = e.oldData[property];
+      }
+    }}
+</text>)
+    .Columns(columns =>
+    {
+
+        columns.Add().DataField("PART_NUMBER")
+        .HidingPriority(0)
+        .Alignment(HorizontalAlignment.Center);
+        columns.Add().DataField("QUANTITY")
+        .HidingPriority(1)
+          .Alignment(HorizontalAlignment.Center);
+        columns.Add().DataField("CAPACITANCE")
+             .Alignment(HorizontalAlignment.Center);
+        columns.Add().DataField("VOLTAGE")
+            .HidingPriority(2)
+            .Alignment(HorizontalAlignment.Center);
+        columns.Add().DataField("LOCATION")
+                .Visible(false);
+
+
+    })
+
+     //.RtlEnabled(true)
+     .StateStoring(s => s
+        .Enabled(true)
+        .Type(StateStoringType.LocalStorage)
+        .StorageKey("storageCapacitor")
+    )
+    .Paging(p => p.PageSize(10))
+    .Pager(p => p
+        .ShowPageSizeSelector(true)
+        .AllowedPageSizes(new[] { 5, 10, 20 })
+        .ShowInfo(true)
+    )
+    //   .OnSelectionChanged("selectionChanged")
+    // .OnContentReady("ContentReady")
+    .OnContentReady("DataDoneCapacitor")
+    )
+<div id="action-removeCapacitor"></div>
+<div id="action-editCapacitor"></div>
+<div id="action-Add-row-from-elemen14"></div>
+<div id="popup"></div>
+
+
+
+@(Html.DevExtreme().SpeedDialAction()
+    .ID("action-add-Capacitor")
+    .Icon("add")
+    .Visible(false)
+    .Label("Add row")
+    .Index(1)
+    .OnClick("addRowCapacitor")
+)
+@(Html.DevExtreme().SpeedDialAction()
+    .ID("action-Add-row-from-elemen14")
+    .Icon("add")
+    .Visible(true)
+    .Label("elemen14")
+    .Index(1)
+    .OnClick("popup")
+)
+@(Html.DevExtreme().SpeedDialAction()
+    .ID("action-removeCapacitor")
+    .Icon("trash")
+    .Visible(false)
+    .Label("Delete row")
+    .Index(2)
+    .OnClick("deleteRowCapacitor")
+)
+@(Html.DevExtreme().SpeedDialAction()
+    .ID("action-editCapacitor")
+    .Icon("edit")
+    .Visible(false)
+    .Label("Edit row")
+    .Index(3)
+    .OnClick("editRowCapacitor")
+)
+@(Html.DevExtreme().SpeedDialAction()
+    .ID("action-TakeCapacitor")
+    .Icon("edit")
+    .Visible(false)
+    .Label("Take")
+    .Index(3)
+    .OnClick("TakeCapacitor")
+)
+@(Html.DevExtreme().Popup()
+     .ShowTitle(true)
+     .Title("Login")
+     .ContentTemplate(@<text>
+<div class="form">
+    <div class="dx-fieldset">
+        <div class="dx-field">
+            <div class="dx-field-label">Usernames</div>
+            <div class="dx-field-value">
+                @(Html.DevExtreme().TextBox()
+                    .ID("USERNAMECapacitor")
+                   .Placeholder("Enter Username here...")
+                  //  .ValueChangeEvent("keyup")
+
+                )
+
+            </div>
+        </div>
+        <div class="dx-field">
+            <div class="dx-field-label">Passwords</div>
+            <div class="dx-field-value">
+                @(Html.DevExtreme().TextBox()
+                    .ID("PASSWORDCapacitor")
+                    .Mode(TextBoxMode.Password)
+                    .Placeholder("Enter Password here...")
+                    .OnValueChanged("showeye")
+                     .ValueChangeEvent("keyup")
+                     .Buttons(buttons =>
+                     {
+                buttons.Add()
+                .Name("show_passwordCapacitor")
+                .Location(TextEditorButtonLocation.After)
+                .Widget(w => w.Button()
+                    .ID("show_passwordCapacitor")
+                    .Visible(false)
+                    .Type(ButtonType.Normal)
+                    .StylingMode(ButtonStylingMode.Text)
+                    .Icon("fas fa-eye")
+                    .OnClick("show_passwordCapacitor"));
+
+                buttons.Add()
+                .Name("hide_passwordCapacitor")
+                .Location(TextEditorButtonLocation.After)
+                .Widget(w => w.Button()
+                    .ID("hide_passwordCapacitor")
+                    .Visible(false)
+                    .Icon("fas fa-eye-slash")
+                    .OnClick("hide_passwordCapacitor"));
+        })
+
+
+                )
+            </div>
+        </div>
+    </div>
+</div>
+
+</text>).ID("LoginPopupCapacitor")
+.ToolbarItems(toolbarItems =>
+{
+    toolbarItems.Add()
+
+    .Location(ToolbarItemLocation.After)
+    .Toolbar(Toolbar.Bottom)
+                .Widget(w => w
+                   .Button()
+                   .Text("Close")
+
+                   .OnClick(@<text>function() {  $("#LoginPopupCapacitor").dxPopup("hide")}</text>)
+                );
+    toolbarItems.Add()
+
+    .Location(ToolbarItemLocation.Center)
+    .Toolbar(Toolbar.Bottom)
+                .Widget(w => w
+                   .Button()
+                   .Text("Login")
+                    .ID("loginbtnCapacitor")
+                   .OnClick("loginCapacitor")
+                );
+})
+.Height(350)
+.Width(364)
+)
+@(Html.DevExtreme().Popup()
+    .OnShowing("LoginpopupStateCapacitor")
+    .OnHidden("LoginpopupStateHiddenCapacitor")
+    .ShowTitle(false)
+
+    .ContentTemplate(@<text>
+
+<div class="form">
+    <div class="dx-fieldset">
+         <div class="dx-field">
+
+            <div class="dx-field-value">
+                @(Html.DevExtreme().NumberBox()
+                    .ID("QuantityCapacitor")
+                    .Value(null)
+                    .Placeholder("How many you like to take?")
+                    .ValueChangeEvent("keyup")
+                 //   .OnValueChanged("TakeQuantity")
+                    .Width("204")
+
+                )
+
+
+
+            </div>
+         </div>
+    </div>
+ </div>
+</text>).ID("Take-popupCapacitor")
+.ToolbarItems(toolbarItems =>
+{
+    toolbarItems.Add()
+
+    .Location(ToolbarItemLocation.After)
+    .Toolbar(Toolbar.Bottom)
+                .Widget(w => w
+                   .Button()
+                   .Text("Close")
+
+                   .OnClick(@<text>function() {  $("#Take-popupCapacitor").dxPopup("hide")}</text>)
+                );
+    toolbarItems.Add()
+
+    .Location(ToolbarItemLocation.Center)
+    .Toolbar(Toolbar.Bottom)
+                .Widget(w => w
+                   .Button()
+                   .Text("Take")
+
+                   .OnClick("UpdateQuantityCapacitor")
+                );
+})
+
+//.OnContentReady("datar")
+.Height(196)
+.Width(300)
+
+)
+
+
+
+
+
+<script>
+    var test = "";
+
+    function getparts() {
+
+        var getpart = $("#partnumber").dxTextBox("instance").option("value");
+        console.log(getpart)
+    }
+
+    function loginCapacitor2() {
+        var user = $("#elementId").dxTextBox("instance").option("value");
+
+        var settings = {
+            "url": "https://cors-anywhere.herokuapp.com/https://api.element14.com/catalog/products?versionNumber=1.1&term=any%3A" + user + "&storeInfo.id=uk.farnell.com&resultsSettings.offset=0&resultsSettings.numberOfResults=10&resultsSettings.refinements.filters=rohsCompliant%2CinStock&resultsSettings.responseGroup=large&callInfo.omitXmlSchema=false&callInfo.responseDataFormat=json&callinfo.apiKey=cxg5d3gmnm4qdpk9mt4sttqb",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Cookie": "PF_USERLOC_CC=MY; f5avraaaaaaaaaaaaaaaa_session_=ABPEHAPLKLKLCMNCJOCKKJNMIGAGLOGDCEFKOMJJOFODDGJAOIPLHALGKBMGDBHANEHDDCNHMNGABPCPPEBAKAFOBNPEANBNJKPLPFOPGIMGGNOLMDNDOCLKHFJBJGAO; TS01764c4c=0114f16688cb6375e3b4267554063c735f803ec581fb4facddb2d7e383da30a35d00b0cd8420259cbabe55f2585c55c7d6b800886f"
+            },
+        };
+        $.ajax(settings).done(function (data, key, value) {
+
+            var y = data.keywordSearchReturn.products;
+            console.log(y);
+
+
+
+            $('#TabPanel').dxTabPanel({
+                height: 260,
+                dataSource: y,
+                selectedIndex: 0,
+                loop: false,
+                animationEnabled: true,
+                swipeEnabled: true,
+                itemTitleTemplate: $('#title2'),
+                itemTemplate(y) {
+                    const result = $('<div>').addClass('product');
+
+
+                    /*image url filter if got nio or not*/
+                    var ImagePath = y.image.vrntPath;
+                    /*console.log(ImagePath);*/
+                    var ImageUrl = y.image.baseName;
+                    /*console.log(ImageUrl);*/
+
+                    if (ImagePath == 'nio/') {
+
+                        var Imagehttp = "https://uk.farnell.com/productimages/standard/en_US/" + ImageUrl;
+
+                    }
+                    var Imagehttp = "https://uk.farnell.com/productimages/standard/en_GB/" + ImageUrl;
+                    /*image url filter if got nio or not end*/
+
+                    /* $('<img>').attr('src',Imagehttp).appendTo(result);*/
+                    /* $('<div>').text(y.displayName).appendTo(result); */
+                    /* $("<div >").dxTextBox({
+                                       elementAttr: {
+                                      id: "elementccc",
+
+                                      },
+                                      placeholder: 'Search',
+                                      value:'hai',
+                                       }).appendTo(result); */
+                    /* $("<div >").dxForm({
+                 formData: y,
+                 labelLocation: 'top',
+                 minColWidth: 233,
+                 colCount: 'auto',
+                 colCountByScreen: {
+                   md: 4,
+                   sm: 2,
+                 },
+                 screenByWidth(width) {
+                   return width < 720 ? 'sm' : 'md';
+                 },
+               }).appendTo(result); */
+                    /* $("<div >").dxForm({
+                   colCount: 3,
+                   formData: y,
+                   items: [{
+                     dataField: 'translatedManufacturerPartNumber',
+                     editorOptions: {
+                       disabled: true,
+                     },
+                   }, {
+                     dataField: 'LastName',
+                     editorOptions: {
+                       disabled: true,
+                     },
+                   }, {
+                     dataField: 'HireDate',
+                     editorType: 'dxDateBox',
+                     editorOptions: {
+                       value: null,
+                       width: '100%',
+                     },
+                     validationRules: [{
+                       type: 'required',
+                       message: 'Hire date is required',
+                     }],
+                   }, {
+                     dataField: 'BirthDate',
+                     editorType: 'dxDateBox',
+                     editorOptions: {
+                       disabled: true,
+                       width: '100%',
+                     },
+                   }, 'Address', {
+                     colSpan: 2,
+                     dataField: 'Notes',
+                     editorType: 'dxTextArea',
+                     editorOptions: {
+                       height: 90,
+                     },
+                   }, {
+                     dataField: 'Phone',
+                     editorOptions: {
+                       mask: '+1 (X00) 000-0000',
+                       maskRules: { X: /[02-9]/ },
+                     },
+                   }, 'Email'],
+                 }).appendTo(result);*/
+                    $("<div >").dxForm({
+                        formData: y,
+                        items: [{
+                            itemType: 'group',
+                            cssClass: 'first-group',
+                            colCount: 4,
+                            items: [{
+                                template: "<div class='form-avatar' style='background-image: url(" + Imagehttp + ");'></div>",
+                            }, {
+                                itemType: 'group',
+                                colSpan: 3,
+                                items: [{
+                                    elementAttr: {
+                                        id: "partnumber",
+
+                                    },
+                                    dataField: 'translatedManufacturerPartNumber',
+
+                                }, {
+                                    dataField: 'attributes[1].attributeValue',
+                                },
+                                {
+                                    dataField: 'attributes[3].attributeValue',
+                                },],
+                            }],
+                        }, {
+                            itemType: 'group',
+                            cssClass: 'second-group',
+                            colCount: 2,
+                            items: [{
+                                itemType: 'group',
+                                items: [{
+                                    dataField: 'Address',
+                                }, {
+                                    dataField: 'City',
+                                }, /*{
+          dataField: 'Position',
+          editorType: 'dxSelectBox',
+          editorOptions: {
+            items: positions,
+            value: '',
+          },
+        }*/],
+                            }, {
+                                itemType: 'group',
+                                items: [{
+                                    dataField: 'State',
+                                    editorType: 'dxSelectBox',
+                                    editorOptions: {
+                                        items: states,
+                                    },
+                                }, {
+                                    dataField: 'ZipCode',
+                                }, {
+                                    dataField: 'Mobile',
+                                    label: {
+                                        text: 'Phone',
+                                    },
+                                    editorOptions: {
+                                        mask: '+1 (000) 000-0000',
+                                    },
+                                }],
+                            }, {
+                                colSpan: 2,
+                                dataField: 'Notes',
+                                editorType: 'dxTextArea',
+                                editorOptions: {
+                                    height: 140,
+                                },
+                            }],
+                        }],
+                    }).appendTo(result);
+                    return result;
+
+                },
+                onSelectionChanged(e) {
+                    var PART_NUMBER = e.addedItems[0].translatedManufacturerPartNumber;
+                    var PACKAGING = e.addedItems[0].attributes[3].attributeValue;
+                    var type = e.addedItems[0].attributes[5].attributeValue;
+                    test = e.addedItems[0].sku
+                    console.log(e);
+                    console.log(PART_NUMBER);
+                    console.log(PACKAGING);
+                    console.log(type);
+                    $('.selected-index')
+                        .text(e.component.option('selectedIndex') + 1);
+                },
+            }).dxTabPanel('instance');
+
+
+
+
+
+
+        });;
+
+    }
+    const popupContentTemplate = function () {
+
+
+        return $('<div>').append(
+            $("<div >").dxTextBox({
+
+                placeholder: 'Search',
+                elementAttr: {
+                    id: "elementId",
+
+                },
+                buttons: [{
+                    name: 'password2',
+                    location: 'after',
+                    options: {
+                        icon: 'https://icon-library.com/images/search-button-icon/search-button-icon-5.jpg',
+                        type: 'default',
+                        onClick() {
+                            loginCapacitor2()
+
+
+                        },
+                    },
+                }],
+            }),
+            $("<div >").dxTabPanel({
+
+                elementAttr: {
+                    id: "TabPanel",
+
+                },
+            }),
+
+        );
+    };
+    $("#popup").dxPopup({
+        contentTemplate: popupContentTemplate,
+        toolbarItems: [{
+            text: "ELEMENT14 SEARCH",
+            location: "before"
+        },
+        {
+            widget: "dxButton",
+            toolbar: 'bottom',
+            location: "after",
+            options: {
+                text: "Refresh",
+                onClick: function () {
+                    console.log(test)
+                    // ...
+                }
+            }
+        }],
+
+        visible: true,
+        closeOnOutsideClick: true
+    });
+    //#region Show eye icon on password textbox
+
+
+    function showeye() {
+        var pass = $("#PASSWORDCapacitor").dxTextBox("instance").option("value")
+        var passwordEditor = $("#PASSWORDCapacitor").dxTextBox("instance");
+        var passCondition = passwordEditor.option("mode")
+        if (pass != "" && passCondition === "password") {
+            $("#show_passwordCapacitor").dxButton("instance").option("visible", true);
+        }
+        else if (pass != "" && passCondition === "text") {
+
+            $("#hide_passwordCapacitor").dxButton("instance").option("visible", true);
+        }
+        else {
+
+            $("#show_passwordCapacitor").dxButton("instance").option("visible", false);
+            $("#hide_passwordCapacitor").dxButton("instance").option("visible", false);
+        }
+    }
+
+    function show_passwordCapacitor() {
+        var passwordEditor = $("#PASSWORDCapacitor").dxTextBox("instance");
+        passwordEditor.option("mode", passwordEditor.option("mode") === "text" ? "password" : "text");
+
+        $("#show_passwordCapacitor").dxButton("instance").option("visible", false);
+        $("#hide_passwordCapacitor").dxButton("instance").option("visible", true);
+
+    }
+
+    function hide_passwordCapacitor() {
+        var passwordEditor = $("#PASSWORDCapacitor").dxTextBox("instance");
+
+        passwordEditor.option("mode", passwordEditor.option("mode") === "text" ? "password" : "text");
+        $("#show_passwordCapacitor").dxButton("instance").option("visible", true);
+        $("#hide_passwordCapacitor").dxButton("instance").option("visible", false);
+
+    }
+
+
+    //#endregion
+
+
+
+    //#region Popuplogin state If take not Login
+
+
+    function DataDoneCapacitor() {
+        var GetloginpopupstateOptocoupler = sessionStorage.getItem("PopUploginStateCapacitor");
+        if (GetloginpopupstateOptocoupler === "show") {
+            $("#Take-popupCapacitor").dxPopup("show")
+
+        } else {
+            $("#Take-popupCapacitor").dxPopup("hide")
+        }
+
+    }
+
+    function LoginpopupStateHiddenCapacitor(e) {
+        sessionStorage.setItem("PopUploginStateCapacitor", "hide");
+
+
+    }
+
+    function LoginpopupStateCapacitor(e) {
+
+        sessionStorage.setItem("PopUploginStateCapacitor", "show");
+
+    }
+
+
+    //#endregion
+
+
+    //#region Add Update edit delete floatingActionButton
+
+    function onFocusedRowChanged(e) {
+
+        focusedRowKey = e.component.option("focusedRowIndex");
+
+        selectedRowIndex = e.component.getRowIndexByKey(focusedRowKey);
+        if (sessionStorage.getItem("Token") != null) {
+            $("#action-TakeCapacitor").dxSpeedDialAction("instance").option("visible", true)
+        }
+
+
+
+
+    }
+    var popup = function () {
+        return $("#popup").dxPopup("instance");
+    }
+
+    var getGridInstance = function () {
+        return $("#gridCapacitor").dxDataGrid("instance");
+    }
+
+    var addRowCapacitor = function () {
+        getGridInstance().addRow();
+        getGridInstance().deselectAll();
+    }
+    var deleteRowCapacitor = function () {
+        getGridInstance().deleteRow(focusedRowKey);
+        getGridInstance().deselectAll();
+    }
+    var editRowCapacitor = function () {
+        getGridInstance().editRow(focusedRowKey);
+        getGridInstance().deselectAll();
+    }
+
+    var TakeCapacitor = function (e) {
+        $("#Take-popupCapacitor").dxPopup("show")
+    }
+
+    $(function () {
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            //document.write("mobile");
+            $("#gridCapacitor").dxDataGrid({
+
+                filterRow: {
+                    visible: true,
+                    applyFilter: "onClick"
+                }
+            });
+
+        }
+
+
+        var today = moment().format('YYYY-MM-DDTHH:mm:ss');
+
+        var ordersStore = new DevExpress.data.CustomStore({
+            key: "STOCK_ID",
+
+            load: function () {
+                return sendRequest("/api/Capacitor");
+            },
+            insert: function (values) {
+                return sendRequest("/api/Capacitor", "POST", {
+                    "PART_NUMBER": values.PART_NUMBER,
+                    "CAPACITANCE": values.CAPACITANCE,
+                    "VOLTAGE": values.VOLTAGE,
+                    "LOCATION": values.LOCATION,
+                    "IGNORE": 0,
+                    "QUANTITY": values.QUANTITY,
+                    "COMPONENTS_ID": "CAPACITOR",
+                    "User": sessionStorage.getItem("Username"),
+                    "CreateDate": today,
+                    "UpdateDate": today
+
+                });
+            },
+            update: function (key, values) {
+                return sendRequest("/api/Capacitor/Update/" + key, "PUT", {
+                    "STOCK_ID": key,
+                    "PART_NUMBER": values.PART_NUMBER,
+                    "VOLTAGE": values.VOLTAGE,
+                    "CAPACITANCE": values.CAPACITANCE,
+                    "LOCATION": values.LOCATION,
+                    "QUANTITY": parseInt(values.QUANTITY),
+                    "IGNORE": 0,
+                    "User": sessionStorage.getItem("Username"),
+                    "UpdateDate": today
+                });
+            },
+            remove: function (key) {
+                return sendRequest("/api/Capacitor/" + key, "DELETE", {
+                    key: key
+                });
+            }
+        });
+
+        var dataGrid = $("#gridCapacitor").dxDataGrid({
+            dataSource: ordersStore,
+
+        }).dxDataGrid("instance");
+
+        $("#refresh-mode").dxSelectBox({
+            items: ["full", "reshape", "repaint"],
+            value: "reshape",
+            onValueChanged: function (e) {
+                dataGrid.option("editing.refreshMode", e.value);
+            }
+        });
+
+        $("#clear").dxButton({
+            text: "Clear",
+            onClick: function () {
+                $("#requests ul").empty();
+            }
+        });
+
+        function sendRequest(url, method, data) {
+            var d = $.Deferred();
+
+            method = method || "GET";
+
+            logRequest(method, url, data);
+
+            $.ajax(url, {
+                method: method || "GET",
+                // data: data,
+                data: JSON.stringify(data),
+                cache: true,
+                headers: {
+                    "DataType": "json",
+                    "Authorization": "Bearer " + sessionStorage.getItem("Token"),
+                    "Content-Type": "application/json"
+                },
+                statusCode: {
+                    401: function () {
+                        var role = sessionStorage.getItem("Role");
+                        if (role == null) {
+                            $("#Take-popupCapacitor").dxPopup("hide");
+                            $("#LoginPopupCapacitor").dxPopup("show")
+                        }
+
+
+
+                    },
+                    200: function () {
+
+                        if (method === "POST") {
+                            DevExpress.ui.notify({
+                                message: "Success Add New Capacitor",
+                                position: { my: "top", at: "top", of: $("#Windows") },
+                                width: 300,
+                                shading: false
+                            }, "Success", 5000);
+                        }
+
+
+
+                    },
+                    204: function () {
+                        var GetloginpopupstateOptocoupler = sessionStorage.getItem("PopUploginStateCapacitor");
+                        if (GetloginpopupstateOptocoupler === "show" && method === "PUT") {
+
+                            var PARTNUMBER = dataGrid.cellValue(focusedRowKey, "PART_NUMBER");
+                            var LOCATION = dataGrid.cellValue(focusedRowKey, "LOCATION");
+                            sessionStorage.setItem("PopUploginStateCapacitor", "hide");
+                            $("#Take-popupCapacitor").dxPopup("hide");
+                            var myDialog = DevExpress.ui.dialog.custom({
+                                title: "Thanks for Update",
+                                messageHtml: "Your item " + PARTNUMBER + " Location is : " + LOCATION,
+                                buttons: [{ text: "Close now" }]
+                            });
+                            myDialog.show();
+
+                        }
+                        else if (method === "PUT") {
+                            var PARTNUMBER = dataGrid.cellValue(focusedRowKey, "PART_NUMBER");
+                            DevExpress.ui.notify({
+                                message: "Success Update " + PARTNUMBER,
+                                position: { my: "top", at: "top", of: $("#Windows") },
+                                width: 300,
+                                shading: false
+                            }, "Success", 5000);
+                        }
+                        else if (method === "DELETE") {
+                            var PARTNUMBER = dataGrid.cellValue(focusedRowKey, "PART_NUMBER");
+                            DevExpress.ui.notify({
+                                message: "Success Delete " + PARTNUMBER,
+                                position: { my: "top", at: "top", of: $("#Windows") },
+                                width: 300,
+                                shading: false
+                            }, "Success", 5000);
+                        }
+
+                    }
+                }
+
+            }).done(function (result) {
+                d.resolve(method === "GET" ? result.data : result);
+            }).fail(function (xhr) {
+                var response = xhr.responseJSON;
+
+
+                if (xhr.status == 400) {
+                    $.each(response.errors, function (fieldName, errorBag) {
+                        //output the fieldname for this error
+                        console.log(fieldName);
+
+                        // output each error message for this field
+                        $.each(errorBag, function (i, message) {
+                            DevExpress.ui.notify(message);
+                            //d.reject(message);
+                            //$("#my-popup").dxPopup("show")
+                        });
+                    });
+                }
+
+            });
+
+
+            return d.promise();
+        }
+
+        function logRequest(method, url, data) {
+            var args = Object.keys(data || {}).map(function (key) {
+                return key + "=" + data[key];
+            }).join(" ");
+
+            var logList = $("#requests ul"),
+                time = DevExpress.localization.formatDate(new Date(), "HH:mm:ss"),
+                newItem = $("<li>").text([time, method, url.slice(URL.length), args].join(" "));
+
+            logList.prepend(newItem);
+        }
+        var role = sessionStorage.getItem("Role");
+
+
+
+
+        if (role == "Admin") {
+            $("#action-add-Capacitor").dxSpeedDialAction("instance").option("visible", true);
+            $("#action-removeCapacitor").dxSpeedDialAction("instance").option("visible", true);
+            $("#action-editCapacitor").dxSpeedDialAction("instance").option("visible", true);
+
+        }
+
+
+        /*floatingActionButton location setting*/
+
+        DevExpress.config({
+            floatingActionButtonConfig: {
+                icon: "rowfield",
+                position: {
+                    my: "right bottom",
+                    at: "right bottom",
+                    of: "#app-container",
+                    offset: "-16 -16"
+                }
+            }
+        });
+    });
+
+
+
+
+    //#endregion
+
+
+
+    //#region UpdateQuantity
+
+
+    var UpdateQuantityCapacitor = function () {
+        var dataGrid = $("#gridCapacitor").dxDataGrid("instance");
+        var OriQuantitys = dataGrid.cellValue(focusedRowKey, "QUANTITY");
+        var Quantitys = $("#QuantityCapacitor").dxNumberBox("instance").option("value")
+
+        var result = DevExpress.ui.dialog.confirm("Are you sure only " + Quantitys + " you take?", "Confirm Take");
+
+        result.done(function (dialogResult) {
+
+            if (dialogResult == true) {
+
+                if (OriQuantitys < Quantitys) {
+                    DevExpress.ui.notify("Quantity invalid");
+                }
+                //else if (sessionStorage.getItem("Token") === null)
+                //{
+                //    $("#Take-popupCapacitor").dxPopup("hide");
+                //    $("#LoginPopupCapacitor").dxPopup("show")
+                //}
+
+
+                else {
+                    var TakeQuentitys = OriQuantitys - Quantitys;
+                    dataGrid.cellValue(focusedRowKey, "QUANTITY", TakeQuentitys);
+                    dataGrid.saveEditData();
+
+                }
+
+
+
+
+            }
+        });
+
+        //  DevExpress.ui.notify("Quantity" + Quantitys);
+
+
+
+
+    }
+
+
+
+    //#endregion
+
+
+
+    //#region Login
+
+
+    function loginCapacitor() {
+
+        var user = $("#USERNAMECapacitor").dxTextBox("instance").option("value")
+        var pass = $("#PASSWORDCapacitor").dxTextBox("instance").option("value")
+
+        var settings = {
+
+            "url": "/users/authenticate",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+
+                "Content-Type": "application/json"
+            },
+            statusCode: {
+
+                200: function () {
+                    //$("#LoginPopupCapacitor").dxPopup("hide");
+                    //$("#Take-popupCapacitor").dxPopup("show");
+                    sessionStorage.setItem("PopUploginStateCapacitor", "show");
+                    //$("#Take-popupCapacitor").dxPopup("hide");
+                    //$("#LoginPopupCapacitor").dxPopup("show")
+                    window.location.href = window.location;
+                }
+            },
+            "data": JSON.stringify({ "username": user, "password": pass }),
+
+        };
+
+
+        $.ajax(settings).done(function (data) {
+
+
+            sessionStorage.setItem("Token", data.Token);
+            sessionStorage.setItem("Role", data.Role);
+            sessionStorage.setItem("Username", data.Username);
+
+            DevExpress.ui.notify({
+                message: "Success Login, Hello! " + sessionStorage.getItem("Username"),
+                position: { my: "top", at: "top", of: $('#Windows') },
+                width: 300,
+                shading: false
+            }, "Success", 5000);
+
+
+        })
+            .fail(function (data) {
+                //var pass = $("#Passwordss")
+                //    .dxTextBox("instance")
+                //    .option("value")
+                //  DevExpress.ui.notify("Warning message", "warning", 500);
+                // DevExpress.ui.notify("value:" + pass + user);
+                DevExpress.ui.notify({
+                    message: "Username or Password is invalid",
+                    position: { my: "top", at: "top", of: $('#Windows') },
+                    width: 300,
+                    shading: false
+                }, "error", 5000);
+
+                //window.location.href = window.location;
+
+
+
+            });
+
+
+
+
+
+
+
+
+    }
+
+
+
+    //#endregion
+
+
+    const employeeData = {
+        name: "John Heart",
+        position: "CEO",
+        hireDate: new Date(2012, 4, 13),
+        officeNumber: 901,
+        notes: "John has been in the Audio/Video industry since 1990. He has led DevAV as its CEO since 2003.",
+        roles: ["Chief Officer", "Manager", "Administrator"]
+    };
+    const directions = {
+        auto: {
+            icon: 'rowfield',
+            shading: true,
+            position: {
+                of: '#grid',
+                my: 'right bottom',
+                at: 'right bottom',
+                offset: '-16 -16',
+            },
+        },
+        up: {
+            icon: 'rowfield',
+            shading: true,
+            direction: 'up',
+            position: {
+                of: '#grid',
+                my: 'right bottom',
+                at: 'right bottom',
+                offset: '-16 -16',
+            },
+        },
+        down: {
+            icon: 'rowfield',
+            shading: true,
+            direction: 'down',
+            position: {
+                of: '.dx-datagrid-rowsview',
+                my: 'right top',
+                at: 'right top',
+                offset: '-16 16',
+            },
+        },
+    };
+
+    const employees = [{
+        ID: 1,
+        FirstName: 'John',
+        LastName: 'Heart',
+        Prefix: 'Mr.',
+        Position: 'CEO',
+        BirthDate: '1964/03/16',
+        HireDate: '1995/01/15',
+        Notes: 'John has been in the Audio/Video industry since 1990. He has led DevAv as its CEO since 2003.\r\n\r\nWhen not working hard as the CEO, John loves to golf and bowl. He once bowled a perfect game of 300.',
+        Address: '351 S Hill St.',
+        StateID: 5,
+    }, {
+        ID: 2,
+        FirstName: 'Olivia',
+        LastName: 'Peyton',
+        Prefix: 'Mrs.',
+        Position: 'Sales Assistant',
+        BirthDate: '1981/06/03',
+        HireDate: '2012/05/14',
+        Notes: 'Olivia loves to sell. She has been selling DevAV products since 2012. \r\n\r\nOlivia was homecoming queen in high school. She is expecting her first child in 6 months. Good Luck Olivia.',
+        Address: '807 W Paseo Del Mar',
+        StateID: 5,
+    }, {
+        ID: 3,
+        FirstName: 'Robert',
+        LastName: 'Reagan',
+        Prefix: 'Mr.',
+        Position: 'CMO',
+        BirthDate: '1974/09/07',
+        HireDate: '2002/11/08',
+        Notes: 'Robert was recently voted the CMO of the year by CMO Magazine. He is a proud member of the DevAV Management Team.\r\n\r\nRobert is a championship BBQ chef, so when you get the chance ask him for his secret recipe.',
+        Address: '4 Westmoreland Pl.',
+        StateID: 4,
+    }, {
+        ID: 4,
+        FirstName: 'Greta',
+        LastName: 'Sims',
+        Prefix: 'Ms.',
+        Position: 'HR Manager',
+        BirthDate: '1977/11/22',
+        HireDate: '1998/04/23',
+        Notes: "Greta has been DevAV's HR Manager since 2003. She joined DevAV from Sonee Corp.\r\n\r\nGreta is currently training for the NYC marathon. Her best marathon time is 4 hours. Go Greta.",
+        Address: '1700 S Grandview Dr.',
+        StateID: 11,
+    }, {
+        ID: 5,
+        FirstName: 'Brett',
+        LastName: 'Wade',
+        Prefix: 'Mr.',
+        Position: 'IT Manager',
+        BirthDate: '1968/12/01',
+        HireDate: '2009/03/06',
+        Notes: 'Brett came to DevAv from Microsoft and has led our IT department since 2012.\r\n\r\nWhen he is not working hard for DevAV, he coaches Little League (he was a high school pitcher).',
+        Address: '1120 Old Mill Rd.',
+        StateID: 13,
+    }, {
+        ID: 6,
+        FirstName: 'Sandra',
+        LastName: 'Johnson',
+        Prefix: 'Mrs.',
+        Position: 'Controller',
+        BirthDate: '1974/11/15',
+        HireDate: '2005/05/11',
+        Notes: "Sandra is a CPA and has been our controller since 2008. She loves to interact with staff so if you've not met her, be certain to say hi.\r\n\r\nSandra has 2 daughters both of whom are accomplished gymnasts.",
+        Address: '4600 N Virginia Rd.',
+        StateID: 44,
+    }, {
+        ID: 7,
+        FirstName: 'Kevin',
+        LastName: 'Carter',
+        Prefix: 'Mr.',
+        Position: 'Shipping Manager',
+        BirthDate: '1978/01/09',
+        HireDate: '2009/08/11',
+        Notes: 'Kevin is our hard-working shipping manager and has been helping that department work like clockwork for 18 months.\r\n\r\nWhen not in the office, he is usually on the basketball court playing pick-up games.',
+        Address: '424 N Main St.',
+        StateID: 5,
+    }, {
+        ID: 8,
+        FirstName: 'Cynthia',
+        LastName: 'Stanwick',
+        Prefix: 'Ms.',
+        Position: 'HR Assistant',
+        BirthDate: '1985/06/05',
+        HireDate: '2008/03/24',
+        Notes: 'Cindy joined us in 2008 and has been in the HR department for 2 years. \r\n\r\nShe was recently awarded employee of the month. Way to go Cindy!',
+        Address: '2211 Bonita Dr.',
+        StateID: 4,
+    }, {
+        ID: 9,
+        FirstName: 'Kent',
+        LastName: 'Samuelson',
+        Prefix: 'Dr.',
+        Position: 'Ombudsman',
+        BirthDate: '1972/09/11',
+        HireDate: '2009/04/22',
+        Notes: 'As our ombudsman, Kent is on the front-lines solving customer problems and helping our partners address issues out in the field.    He is a classically trained musician and is a member of the Chamber Orchestra.',
+        Address: '12100 Mora Dr',
+        StateID: 26,
+    }, {
+        ID: 10,
+        FirstName: 'Taylor',
+        LastName: 'Riley',
+        Prefix: 'Mr.',
+        Position: 'Network Admin',
+        BirthDate: '1982/08/14',
+        HireDate: '2012/04/14',
+        Notes: "If you are like the rest of us at DevAV, then you've probably reached out for help from Taylor. He does a great job as a member of our IT department.",
+        Address: '7776 Torreyson Dr',
+        StateID: 5,
+    }, {
+        ID: 11,
+        FirstName: 'Sam',
+        LastName: 'Hill',
+        Prefix: 'Mr.',
+        Position: 'Sales Assistant',
+        BirthDate: '1984/02/17',
+        HireDate: '2012/02/01',
+        Notes: 'Sammy is proud to be a member of the DevAV team. He joined the team in 2012 and has been in the sales department from the beginning.\r\n\r\nHe has just picked up golf so you can find him on the links every weekend.',
+        Address: '645 Prospect Crescent',
+        StateID: 11,
+    }, {
+        ID: 12,
+        FirstName: 'Kelly',
+        LastName: 'Rodriguez',
+        Prefix: 'Ms.',
+        Position: 'Support Assistant',
+        BirthDate: '1988/05/11',
+        HireDate: '2012/10/13',
+        Notes: "Kelly loves people and that's why she joined DevAV's support department. One of the funniest people in the company, she does stand-up on the weekends at the Laugh Factory.",
+        Address: '1601 W Mountain St.',
+        StateID: 5,
+    }, {
+        ID: 13,
+        FirstName: 'Natalie',
+        LastName: 'Maguirre',
+        Prefix: 'Mrs.',
+        Position: 'Trainer',
+        BirthDate: '1977/10/07',
+        HireDate: '2008/06/19',
+        Notes: 'Natalie travels the US and teaches our partners how to explain the benefits of our products to customers.\r\n\r\nShe is a proud wife and mom and volunteers her time at the elementary school.',
+        Address: '6400 E Bixby Hill Rd',
+        StateID: 29,
+    }, {
+        ID: 14,
+        FirstName: 'Walter',
+        LastName: 'Hobbs',
+        Prefix: 'Mr.',
+        Position: 'Programmer',
+        BirthDate: '1984/12/24',
+        HireDate: '2011/02/17',
+        Notes: "Walter has been developing apps and websites for DevAV since 2011. His passion is software and if you ever walk by his desk, you'll know why.\r\n\r\nWally once worked 72 hours straight - writing code and fixing bugs.",
+        Address: '10385 Shadow Oak Dr',
+        StateID: 13,
+    }];
+
+    const states = [{
+        ID: 1,
+        Name: 'Alabama',
+    }, {
+        ID: 2,
+        Name: 'Alaska',
+    }, {
+        ID: 3,
+        Name: 'Arizona',
+    }, {
+        ID: 4,
+        Name: 'Arkansas',
+    }, {
+        ID: 5,
+        Name: 'California',
+    }, {
+        ID: 6,
+        Name: 'Colorado',
+    }, {
+        ID: 7,
+        Name: 'Connecticut',
+    }, {
+        ID: 8,
+        Name: 'Delaware',
+    }, {
+        ID: 9,
+        Name: 'District of Columbia',
+    }, {
+        ID: 10,
+        Name: 'Florida',
+    }, {
+        ID: 11,
+        Name: 'Georgia',
+    }, {
+        ID: 12,
+        Name: 'Hawaii',
+    }, {
+        ID: 13,
+        Name: 'Idaho',
+    }, {
+        ID: 14,
+        Name: 'Illinois',
+    }, {
+        ID: 15,
+        Name: 'Indiana',
+    }, {
+        ID: 16,
+        Name: 'Iowa',
+    }, {
+        ID: 17,
+        Name: 'Kansas',
+    }, {
+        ID: 18,
+        Name: 'Kentucky',
+    }, {
+        ID: 19,
+        Name: 'Louisiana',
+    }, {
+        ID: 20,
+        Name: 'Maine',
+    }, {
+        ID: 21,
+        Name: 'Maryland',
+    }, {
+        ID: 22,
+        Name: 'Massachusetts',
+    }, {
+        ID: 23,
+        Name: 'Michigan',
+    }, {
+        ID: 24,
+        Name: 'Minnesota',
+    }, {
+        ID: 25,
+        Name: 'Mississippi',
+    }, {
+        ID: 26,
+        Name: 'Missouri',
+    }, {
+        ID: 27,
+        Name: 'Montana',
+    }, {
+        ID: 28,
+        Name: 'Nebraska',
+    }, {
+        ID: 29,
+        Name: 'Nevada',
+    }, {
+        ID: 30,
+        Name: 'New Hampshire',
+    }, {
+        ID: 31,
+        Name: 'New Jersey',
+    }, {
+        ID: 32,
+        Name: 'New Mexico',
+    }, {
+        ID: 33,
+        Name: 'New York',
+    }, {
+        ID: 34,
+        Name: 'North Carolina',
+    }, {
+        ID: 35,
+        Name: 'Ohio',
+    }, {
+        ID: 36,
+        Name: 'Oklahoma',
+    }, {
+        ID: 37,
+        Name: 'Oregon',
+    }, {
+        ID: 38,
+        Name: 'Pennsylvania',
+    }, {
+        ID: 39,
+        Name: 'Rhode Island',
+    }, {
+        ID: 40,
+        Name: 'South Carolina',
+    }, {
+        ID: 41,
+        Name: 'South Dakota',
+    }, {
+        ID: 42,
+        Name: 'Tennessee',
+    }, {
+        ID: 43,
+        Name: 'Texas',
+    }, {
+        ID: 44,
+        Name: 'Utah',
+    }, {
+        ID: 45,
+        Name: 'Vermont',
+    }, {
+        ID: 46,
+        Name: 'Virginia',
+    }, {
+        ID: 47,
+        Name: 'Washington',
+    }, {
+        ID: 48,
+        Name: 'West Virginia',
+    }, {
+        ID: 49,
+        Name: 'Wisconsin',
+    }, {
+        ID: 50,
+        Name: 'Wyoming',
+    }, {
+        ID: 51,
+        Name: 'North Dakota',
+    }];
+
+
+    const tabPanelItems = [{
+        ID: 1,
+        CompanyName: 'SuprMart',
+        Address: '702 SW 8th Street',
+        City: 'Bentonville',
+        State: 'Arkansas',
+        Zipcode: 72716,
+        Phone: '(800) 555-2797',
+        Fax: '(800) 555-2171',
+        Website: 'http://www.nowebsitesupermart.com',
+    }, {
+        ID: 2,
+        CompanyName: "El'Depot",
+        Address: '2455 Paces Ferry Road NW',
+        City: 'Atlanta',
+        State: 'Georgia',
+        Zipcode: 30339,
+        Phone: '(800) 595-3232',
+        Fax: '(800) 595-3231',
+        Website: 'http://www.nowebsitedepot.com',
+    }, {
+        ID: 3,
+        CompanyName: 'K&S Music',
+        Address: '1000 Nicllet Mall',
+        City: 'Minneapolis',
+        State: 'Minnesota',
+        Zipcode: 55403,
+        Phone: '(612) 304-6073',
+        Fax: '(612) 304-6074',
+        Website: 'http://www.nowebsitemusic.com',
+    }, {
+        ID: 4,
+        CompanyName: 'Tom Club',
+        Address: '999 Lake Drive',
+        City: 'Issaquah',
+        State: 'Washington',
+        Zipcode: 98027,
+        Phone: '(800) 955-2292',
+        Fax: '(800) 955-2293',
+        Website: 'http://www.nowebsitetomsclub.com',
+    }];
+
+</script>
