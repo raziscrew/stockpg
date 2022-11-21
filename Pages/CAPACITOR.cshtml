@@ -122,8 +122,7 @@ function(e) {  for (var property in e.oldData) {
     )
 <div id="action-removeCapacitor"></div>
 <div id="action-editCapacitor"></div>
-<div id="action-Add-row-from-elemen14"></div>
-<div id="popup"></div>
+
 
 
 
@@ -135,14 +134,7 @@ function(e) {  for (var property in e.oldData) {
     .Index(1)
     .OnClick("addRowCapacitor")
 )
-@(Html.DevExtreme().SpeedDialAction()
-    .ID("action-Add-row-from-elemen14")
-    .Icon("add")
-    .Visible(true)
-    .Label("elemen14")
-    .Index(1)
-    .OnClick("popup")
-)
+
 @(Html.DevExtreme().SpeedDialAction()
     .ID("action-removeCapacitor")
     .Icon("trash")
@@ -315,7 +307,7 @@ function(e) {  for (var property in e.oldData) {
 
 
 <script>
-    var test = "";
+
 
    
 
@@ -408,9 +400,7 @@ function(e) {  for (var property in e.oldData) {
 
 
     }
-    var popup = function () {
-        return $("#popup").dxPopup("instance");
-    }
+   
 
     var getGridInstance = function () {
         return $("#gridCapacitor").dxDataGrid("instance");
