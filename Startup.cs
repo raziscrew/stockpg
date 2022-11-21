@@ -36,7 +36,7 @@ namespace JPGStockServer
             //    services.AddDbContext<DataContext>();
             //else
             //    services.AddDbContext<DataContext, SqliteDataContext>();
-            app.UseDeveloperExceptionPage();
+            
             services.AddDbContext<DataContext>(options =>
               options.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
