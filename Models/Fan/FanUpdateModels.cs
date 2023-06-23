@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace JPGStockServer.Models.Diode
+namespace JPGStockServer.Models.Fan
 {
-    public class DiodeUpdateModels
+    public class FanUpdateModels
     {
         [Required]
         public Int64 STOCK_ID { get; set; }
@@ -15,11 +15,7 @@ namespace JPGStockServer.Models.Diode
         public Double? AMPERE { get; set; }
 
         public Double? WATT { get; set; }
-
-        public String TYPE { get; set; }
-
-        public String PACKAGING { get; set; }
-
+        
         public String LOCATION { get; set; }
 
         public Int32? IGNORE { get; set; }
@@ -29,5 +25,7 @@ namespace JPGStockServer.Models.Diode
         public DateTime UpdateDate { get; set; }
 
         public String User { get; set; }
+        public String SIZE { get; set; }
+        public Int64? WIRE { get; set; }
     }
 }
