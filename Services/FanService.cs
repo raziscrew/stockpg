@@ -7,9 +7,9 @@ using System.Linq;
 namespace JPGStockServer.Services
 {
 
-    public interface IDiodeService
+    public interface IFanService
     {
-        IEnumerable<Stock> GetAllDiodes();
+        IEnumerable<Stock> GetAllFans();
 
 
         IEnumerable<Stock> SearchByPartNumber(string Partnumbers);
@@ -22,17 +22,17 @@ namespace JPGStockServer.Services
 
         void Delete(Stock Delete);
 
-        Stock DiodeExists(long id);
+        Stock FanExists(long id);
 
 
         bool SaveToDb();
     }
 
 
-    public class DiodeService : IDiodeService
+    public class DiodeService : IFanService
     {
         private DataContext _context;
-        public DiodeService(DataContext context)
+        public FanService(DataContext context)
         {
             _context = context;
         }
@@ -51,7 +51,7 @@ namespace JPGStockServer.Services
 
         }
 
-        public Stock DiodeExists(long id)
+        public Stock FanExists(long id)
         {
             return _context.Stocks.FirstOrDefault(e => e.STOCK_ID == id);
         }
@@ -67,9 +67,9 @@ namespace JPGStockServer.Services
             _context.Stocks.Remove(Delete);
         }
 
-        public IEnumerable<Stock> GetAllDiodes()
+        public IEnumerable<Stock> GetAllFans()
         {
-            var result = _context.Stocks.Where(q => q.COMPONENTS_ID == "DIODE").OrderBy(on => on.STOCK_ID);
+            var result = _context.Stocks.Where(q => q.COMPONENTS_ID == "FAN").OrderBy(on => on.STOCK_ID);
             return result;
         }
 
@@ -80,7 +80,7 @@ namespace JPGStockServer.Services
 
         public IEnumerable<Stock> SearchByPartNumber(string Partnumbers)
         {
-            var PartnumberS = _context.Stocks.Where(x => x.PART_NUMBER.ToLower().Contains(Partnumbers.ToLower()) && x.COMPONENTS_ID == "DIODE").ToList();
+            var PartnumberS = _context.Stocks.Where(x => x.PART_NUMBER.ToLower().Contains(Partnumbers.ToLower()) && x.COMPONENTS_ID == "Fan").ToList();
 
 
             return PartnumberS;
