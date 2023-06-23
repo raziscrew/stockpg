@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JPGStockServer.Models.Fan
 {
-    public class DiodeModels
+    public class FanModels
     {
         [Required]
         public Int64 STOCK_ID { get; set; }
