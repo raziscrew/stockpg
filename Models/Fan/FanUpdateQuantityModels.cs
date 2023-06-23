@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace JPGStockServer.Models.Diode
+namespace JPGStockServer.Models.Fan
 {
-    public class DiodeUpdateQuantityModels
+    public class FanUpdateQuantityModels
     {
 
         [Required]
