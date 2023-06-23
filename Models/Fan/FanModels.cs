@@ -25,5 +25,7 @@ namespace JPGStockServer.Models.Fan
         [Required]
         public DateTime UpdateDate { get; set; }
         public String User { get; set; }
+        public String SIZE { get; set; }
+        public Int64? WIRE { get; set; }
     }
 }
