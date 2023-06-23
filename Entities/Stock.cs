@@ -51,6 +51,9 @@ namespace JPGStockServer.Entities
 
         public String User { get; set; }
 
+        public String SIZE { get; set; }
+        public Int64? WIRE { get; set; }
+
 
 
 

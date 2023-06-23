@@ -13,6 +13,7 @@ using JPGStockServer.Models.Resistor;
 using JPGStockServer.Models.Stocks;
 using JPGStockServer.Models.Transistor;
 using JPGStockServer.Models.Users;
+using JPGStockServer.Models.Fan;
 
 
 namespace JPGStockServer.Helpers
@@ -83,6 +84,12 @@ namespace JPGStockServer.Helpers
             CreateMap<NotificationRequest, NotificationRequestModels>();
             CreateMap<NotificationStatusModels, NotificationRequest>();
             CreateMap<NotificationAddModels, NotificationRequest>();
+
+             //Fan//
+            CreateMap<Stock, FanModels>();
+            CreateMap<FanUpdateQuantityModels, Stock>();
+            CreateMap<FanUpdateModels, Stock>();
+            CreateMap<FanAddModels, Stock>();
 
         }
     }
