@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace JPGStockServer.Models.Diode
+namespace JPGStockServer.Models.Fan
 {
     public class DiodeModels
     {
@@ -15,10 +15,6 @@ namespace JPGStockServer.Models.Diode
         public Double? AMPERE { get; set; }
         [Required]
         public Double? WATT { get; set; }
-        [Required]
-        public String TYPE { get; set; }
-        [Required]
-        public String PACKAGING { get; set; }
         [Required]
         public String LOCATION { get; set; }
         [Required]
